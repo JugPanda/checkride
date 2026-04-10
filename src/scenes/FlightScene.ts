@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import { getActiveSession } from '../state/session'
 import type { ScenarioOption } from '../types'
+import { playUiTone } from '../ui/audio'
 import { EventPopup } from '../ui/EventPopup'
 import { InstrumentPanel } from '../ui/InstrumentPanel'
 import { RadioPanel } from '../ui/RadioPanel'
@@ -109,6 +110,13 @@ export class FlightScene extends Phaser.Scene {
     if (nextEvent) {
       this.popup = new EventPopup(this, nextEvent, (option: ScenarioOption) => {
         session.answerEvent(nextEvent, option)
+        if (option.consequence.points >= 7) {
+          playUiTone(this, 'success')
+        } else if (option.consequence.points <= 2) {
+          playUiTone(this, 'failure')
+        } else {
+          playUiTone(this, 'warning')
+        }
         this.popup?.destroy()
         this.popup = null
         this.refreshUi()

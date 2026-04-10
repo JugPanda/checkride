@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { playUiTone } from './audio'
 
 export function createButton(
   scene: Phaser.Scene,
@@ -22,7 +23,10 @@ export function createButton(
     bg.setInteractive({ useHandCursor: true })
       .on('pointerover', () => bg.setFillStyle(0x1971c2, 1))
       .on('pointerout', () => bg.setFillStyle(0x1c7ed6, 0.95))
-      .on('pointerdown', onClick)
+      .on('pointerdown', () => {
+        playUiTone(scene, 'click')
+        onClick()
+      })
   }
 
   return { bg, text }

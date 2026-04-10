@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import { getActiveSession } from '../state/session'
 import type { LoadingInput, ScenarioEvent } from '../types'
+import { playUiTone } from '../ui/audio'
 import { createButton } from '../ui/uiHelpers'
 
 export class PreflightScene extends Phaser.Scene {
@@ -9,6 +10,7 @@ export class PreflightScene extends Phaser.Scene {
   private feedbackText?: Phaser.GameObjects.Text
   private summaryText?: Phaser.GameObjects.Text
   private missionInfoText?: Phaser.GameObjects.Text
+  private verdictText?: Phaser.GameObjects.Text
   private optionObjects: Phaser.GameObjects.GameObject[] = []
   private loading: LoadingInput = {
     pilotWeight: 170,
@@ -59,6 +61,13 @@ export class PreflightScene extends Phaser.Scene {
       wordWrap: { width: 1160 },
       lineSpacing: 8,
     })
+
+    this.verdictText = this.add.text(this.scale.width - 120, 28, '', {
+      fontFamily: 'Arial',
+      fontSize: '20px',
+      fontStyle: 'bold',
+      color: '#86efac',
+    }).setOrigin(1, 0)
 
     this.buildLoadingControls()
     this.renderMissionInfo()
@@ -169,6 +178,19 @@ export class PreflightScene extends Phaser.Scene {
     session.aircraft.setLoading(this.loading)
     session.answerEvent(event, option)
     this.feedbackText?.setText(option.consequence.feedback)
+    if (option.consequence.points >= 7) {
+      this.feedbackText?.setColor('#86efac')
+      this.verdictText?.setColor('#86efac').setText('GOOD CALL')
+      playUiTone(this, 'success')
+    } else if (option.consequence.points <= 2) {
+      this.feedbackText?.setColor('#fca5a5')
+      this.verdictText?.setColor('#fca5a5').setText('POOR ADM')
+      playUiTone(this, 'failure')
+    } else {
+      this.feedbackText?.setColor('#fde68a')
+      this.verdictText?.setColor('#fde68a').setText('MARGINAL')
+      playUiTone(this, 'warning')
+    }
     this.eventIndex += 1
     this.time.delayedCall(450, () => this.renderPrompt())
   }
