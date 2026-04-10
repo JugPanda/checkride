@@ -1,0 +1,282 @@
+{
+  "id": "mission-02-weather",
+  "title": "Mission 02 — Deteriorating Weather",
+  "summary": "A VFR cross-country with lowering ceilings, visibility pressure, and weather reroute decisions. This mission teaches when to stop pressing and start diverting.",
+  "route": {
+    "departure": "KLEX",
+    "destination": "KLOU",
+    "distanceNm": 58,
+    "recommendedAltitudeFt": 4500,
+    "waypoints": [
+      { "id": "lex", "name": "KLEX", "x": 120, "y": 310, "airport": true },
+      { "id": "frankfort", "name": "Frankfort", "x": 210, "y": 270 },
+      { "id": "shelbyville", "name": "Shelbyville", "x": 410, "y": 235 },
+      { "id": "lou", "name": "KLOU", "x": 640, "y": 165, "airport": true }
+    ]
+  },
+  "weather": {
+    "departureMetar": "KLEX 141854Z 23010KT 6SM BKN035 24/18 A2996",
+    "destinationMetar": "KLOU 141856Z 23012KT 4SM OVC028 23/19 A2992",
+    "windsAloft": "3000: 240/18 | 6000: 250/24",
+    "visibilitySm": 4,
+    "ceilingFt": 2800,
+    "riskLevel": "moderate",
+    "summary": "A warm front is lowering ceilings westbound, with Louisville trending toward marginal VFR and light rain showers."
+  },
+  "notams": [
+    "KLOU runway 24 wet braking action advisories possible after 2000Z.",
+    "KFFT ASOS intermittent outages reported.",
+    "AIRMET Sierra valid west of Lexington for ceilings below 3000 feet."
+  ],
+  "preflight": {
+    "personalMinimums": [
+      "Day VFR only",
+      "No ceilings below 3000 ft for solo cross-country",
+      "Minimum 5 SM visibility for launch",
+      "Always identify at least one VFR diversion airport"
+    ],
+    "suggestedFuelGallons": 60,
+    "suggestedPassengers": 1,
+    "baggageLbs": 25
+  },
+  "events": [
+    {
+      "id": "wx-go-no-go",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 0 },
+      "title": "Weather Go / No-Go",
+      "prompt": "Louisville is already trending toward marginal VFR and your personal minimums call for at least 3000-foot ceilings. What is the best preflight decision?",
+      "acsTag": "PA.I.A.R1",
+      "options": [
+        {
+          "id": "delay-or-cancel",
+          "label": "Delay, get an updated briefing, and be prepared to scrub if ceilings keep dropping.",
+          "consequence": {
+            "points": 9,
+            "category": "adm",
+            "feedback": "Correct. The weather is near your stated minimums, so reassessment and flexibility are the best ADM choice.",
+            "commMessage": "Checkride note: delaying for another briefing due to lowering ceilings near destination."
+          }
+        },
+        {
+          "id": "launch-anyway",
+          "label": "Launch immediately before it gets worse and hope Louisville stays usable.",
+          "consequence": {
+            "points": 1,
+            "category": "adm",
+            "feedback": "Poor ADM. Time pressure and weather pressure are combining into a classic get-there-itis setup.",
+            "commMessage": "Weather is close to minimums, but I’m launching anyway to beat the system."
+          }
+        },
+        {
+          "id": "ifr-think",
+          "label": "Launch VFR and plan to just pick up IFR later if needed.",
+          "consequence": {
+            "points": 0,
+            "category": "airspace",
+            "feedback": "Incorrect. You must plan within your current qualifications and the actual operational environment, not wishful escalation.",
+            "commMessage": "I’ll sort it out in the air if the weather drops."
+          }
+        }
+      ]
+    },
+    {
+      "id": "alternate-selection",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 1 },
+      "title": "Diversion Planning",
+      "prompt": "Which preflight action best prepares you for a weather-driven diversion on this route?",
+      "acsTag": "PA.I.C.R5",
+      "options": [
+        {
+          "id": "identify-diversion",
+          "label": "Brief Frankfort and Shelbyville as explicit diversion options with current weather and runway data.",
+          "consequence": {
+            "points": 8,
+            "category": "preflight",
+            "feedback": "Correct. A real diversion plan lowers workload when conditions begin to tighten.",
+            "commMessage": "Primary outs briefed: KFFT and KJVY equivalents on route."
+          }
+        },
+        {
+          "id": "improvise-later",
+          "label": "Skip alternate planning because the route is short and familiar.",
+          "consequence": {
+            "points": 1,
+            "category": "preflight",
+            "feedback": "Weak planning. Familiar routes still demand formal outs when the weather picture is degrading."
+          }
+        },
+        {
+          "id": "fuel-only",
+          "label": "Carry extra fuel but don’t worry about specific diversion fields.",
+          "consequence": {
+            "points": 4,
+            "category": "adm",
+            "feedback": "Extra fuel helps, but it does not replace actual diversion decision-making."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wx-fuel-plan",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 2 },
+      "title": "Fuel Strategy",
+      "prompt": "With weather uncertainty increasing the chance of a diversion or delay, what fuel strategy is best?",
+      "acsTag": "PA.I.C.R4",
+      "options": [
+        {
+          "id": "carry-buffer",
+          "label": "Carry the planned 60 gallons so you have healthy legal and practical reserve if you divert.",
+          "consequence": {
+            "points": 8,
+            "category": "preflight",
+            "feedback": "Correct. Extra reserve buys time and options when weather is changing.",
+            "commMessage": "Loaded with healthy reserve for a likely diversion scenario."
+          }
+        },
+        {
+          "id": "legal-min-only",
+          "label": "Launch with only legal minimum fuel because the route is under an hour.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Unsafe. Weather uncertainty is exactly when bare-minimum fuel becomes a trap.",
+            "aircraftChanges": { "fuelGallons": 18 }
+          }
+        },
+        {
+          "id": "top-off-heavy",
+          "label": "Top all the way off even though you don’t need it and it adds unnecessary performance penalty.",
+          "consequence": {
+            "points": 5,
+            "category": "adm",
+            "feedback": "Defensible, but not ideal. Match fuel to mission risk without creating unnecessary weight.",
+            "aircraftChanges": { "fuelGallons": 75 }
+          }
+        }
+      ]
+    },
+    {
+      "id": "rain-shafts",
+      "phase": "flight",
+      "trigger": { "type": "elapsedMinutes", "value": 6 },
+      "title": "Lowering Ceilings Ahead",
+      "prompt": "Approach reports rain shafts west of Shelbyville and ceilings dropping toward 2500 feet. What is the best action?",
+      "acsTag": "PA.IX.A.R2",
+      "options": [
+        {
+          "id": "divert-early",
+          "label": "Turn toward your planned diversion while VFR options are still wide open.",
+          "consequence": {
+            "points": 9,
+            "category": "adm",
+            "feedback": "Correct. Early diversion preserves options and demonstrates strong ADM.",
+            "weatherSummary": "Ceilings continue lowering westbound; diverting early keeps you comfortably in VFR conditions.",
+            "commMessage": "Approach, Skylane 734JP is diverting to the planned alternate due weather trend.",
+            "commFrequency": "120.15"
+          }
+        },
+        {
+          "id": "continue-see",
+          "label": "Continue another few minutes to see if the weather opens up.",
+          "consequence": {
+            "points": 3,
+            "category": "adm",
+            "feedback": "Marginal. Waiting reduces your decision margin and can quickly turn into scud-running pressure.",
+            "weatherSummary": "Visibility is holding for now, but the weather picture is tightening and your outs are shrinking."
+          }
+        },
+        {
+          "id": "drop-lower",
+          "label": "Descend below the lowering cloud base to maintain visual contact with the ground.",
+          "consequence": {
+            "points": 0,
+            "category": "airspace",
+            "feedback": "Incorrect. Descending into shrinking margins is classic scud-running and a checkride bust move.",
+            "aircraftChanges": { "altitudeFt": 2200 },
+            "commMessage": "Descending below the deck to keep the field in sight."
+          }
+        }
+      ]
+    },
+    {
+      "id": "special-vfr-pressure",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 2 },
+      "title": "Special VFR Pressure",
+      "prompt": "A passenger asks if you can just request Special VFR and finish the trip quickly. How do you respond?",
+      "acsTag": "PA.VII.A.R3",
+      "options": [
+        {
+          "id": "decline-pressure",
+          "label": "Explain that your mission is to stay within personal minimums and continue only if the risk picture supports it.",
+          "consequence": {
+            "points": 8,
+            "category": "adm",
+            "feedback": "Correct. Good ADM includes resisting external pressure and sticking to your standards.",
+            "commMessage": "We’re staying with our minimums and not using passenger pressure as a planning tool."
+          }
+        },
+        {
+          "id": "consider-svfr",
+          "label": "Tell the passenger you’ll probably request Special VFR if the field drops below normal VFR.",
+          "consequence": {
+            "points": 2,
+            "category": "airspace",
+            "feedback": "Weak ADM. Special VFR is not a shortcut to salvage a poor weather decision for a checkride scenario."
+          }
+        },
+        {
+          "id": "promise-arrival",
+          "label": "Promise the passenger you’ll get them there one way or another.",
+          "consequence": {
+            "points": 0,
+            "category": "adm",
+            "feedback": "Incorrect. External pressure should be managed, not amplified."
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-diversion-comms",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 3 },
+      "title": "After the Divert Decision",
+      "prompt": "Once you decide to divert, what radio call best reflects good cockpit management?",
+      "acsTag": "PA.VIII.B.R5",
+      "options": [
+        {
+          "id": "advise-atc",
+          "label": "Advise ATC of the diversion, request the new destination frequency or services, and reset the approach mentally.",
+          "consequence": {
+            "points": 8,
+            "category": "airspace",
+            "feedback": "Correct. Clear communication reduces confusion and helps you stabilize the new plan.",
+            "commMessage": "Approach, Skylane 734JP diverting to Frankfort due weather, request advisories.",
+            "commFrequency": "119.90"
+          }
+        },
+        {
+          "id": "silent-divert",
+          "label": "Quietly turn away and sort the rest out later.",
+          "consequence": {
+            "points": 1,
+            "category": "airspace",
+            "feedback": "Poor communication discipline. ATC and traffic awareness matter even in a diversion."
+          }
+        },
+        {
+          "id": "cancel-services",
+          "label": "Cancel everything immediately even though you still need workload help and traffic awareness.",
+          "consequence": {
+            "points": 4,
+            "category": "adm",
+            "feedback": "Not ideal. Services can help you manage the diversion unless there’s a clear reason to drop them."
+          }
+        }
+      ]
+    }
+  ]
+}

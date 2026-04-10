@@ -1,0 +1,15 @@
+{
+  "id": "t182t",
+  "name": "Cessna T182T Turbo Skylane",
+  "emptyWeightLbs": 1970,
+  "maxGrossWeightLbs": 3100,
+  "usableFuelGallons": 87,
+  "fuelWeightPerGallonLbs": 6,
+  "cruiseFuelBurnGph": 14,
+  "cruiseSpeedKts": 140,
+  "bestGlideKias": 80,
+  "vxKias": 63,
+  "vyKias": 90,
+  "horsepower": 235,
+  "engine": "Lycoming TIO-540-AK1A"
+}

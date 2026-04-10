@@ -1,0 +1,273 @@
+{
+  "id": "mission-05-density-altitude",
+  "title": "Mission 05 — High Density Altitude",
+  "summary": "A hot-day performance mission focused on density altitude, climb performance, loading tradeoffs, and disciplined abort/diversion decisions. This mission punishes magical thinking about the turbo T182T.",
+  "route": {
+    "departure": "KLEX",
+    "destination": "KLOU",
+    "distanceNm": 58,
+    "recommendedAltitudeFt": 6500,
+    "waypoints": [
+      { "id": "lex", "name": "KLEX", "x": 120, "y": 310, "airport": true },
+      { "id": "midway", "name": "Midway", "x": 250, "y": 285 },
+      { "id": "shelbyville", "name": "Shelbyville", "x": 420, "y": 250 },
+      { "id": "lou", "name": "KLOU", "x": 640, "y": 165, "airport": true }
+    ]
+  },
+  "weather": {
+    "departureMetar": "KLEX 151754Z 21011KT 10SM FEW070 34/19 A2999",
+    "destinationMetar": "KLOU 151756Z 22013KT 10SM SCT065 35/20 A2998",
+    "windsAloft": "3000: 220/16 | 6000: 230/22",
+    "visibilitySm": 10,
+    "ceilingFt": 6500,
+    "riskLevel": "high",
+    "summary": "Very hot afternoon conditions are driving density altitude and reducing takeoff, climb, and go-around margins even though weather remains VFR."
+  },
+  "notams": [
+    "KLEX intersection departure requests suspended due performance concerns in heat of day.",
+    "KLOU density altitude advisory in effect during afternoon operations."
+  ],
+  "preflight": {
+    "personalMinimums": [
+      "No unnecessary weight on hot-day departures",
+      "Use full runway and abort points on high DA days",
+      "If climb performance is marginal, stop and fix the plan",
+      "Turbocharging helps power, not wing performance"
+    ],
+    "suggestedFuelGallons": 52,
+    "suggestedPassengers": 1,
+    "baggageLbs": 10
+  },
+  "events": [
+    {
+      "id": "da-brief",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 0 },
+      "title": "Performance Mindset",
+      "prompt": "What is the most accurate statement about this hot-day mission in a turbo T182T?",
+      "acsTag": "PA.VI.A.R3",
+      "options": [
+        {
+          "id": "turbo-not-magic",
+          "label": "The turbo helps maintain power, but density altitude still hurts climb, acceleration, and go-around performance.",
+          "consequence": {
+            "points": 9,
+            "category": "preflight",
+            "feedback": "Correct. Turbocharging does not remove the aerodynamic penalties of thin air.",
+            "commMessage": "Hot-day performance brief complete: turbo helps power, not all performance."
+          }
+        },
+        {
+          "id": "turbo-solves-it",
+          "label": "The turbo means density altitude is basically not a concern for this mission.",
+          "consequence": {
+            "points": 0,
+            "category": "preflight",
+            "feedback": "Incorrect. That misconception is exactly what gets pilots trapped on hot-day operations."
+          }
+        },
+        {
+          "id": "only-landing-issue",
+          "label": "Density altitude mostly matters only on landing, not takeoff or climb.",
+          "consequence": {
+            "points": 1,
+            "category": "preflight",
+            "feedback": "Incorrect. The biggest penalty often appears in takeoff and climb performance."
+          }
+        }
+      ]
+    },
+    {
+      "id": "weight-tradeoff",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 1 },
+      "title": "Weight Tradeoff",
+      "prompt": "What loading choice best fits a hot-day density altitude departure?",
+      "acsTag": "PA.I.C.R3",
+      "options": [
+        {
+          "id": "lighten-smart",
+          "label": "Launch with the planned 52 gallons and minimal baggage to preserve performance while keeping strong reserve.",
+          "consequence": {
+            "points": 8,
+            "category": "preflight",
+            "feedback": "Correct. The best answer preserves both reserve and climb margin."
+          }
+        },
+        {
+          "id": "top-it-off",
+          "label": "Top off because more fuel is always the safest answer regardless of climb performance.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Weak. Excess fuel can erase the very performance margin you need on a high-DA day."
+          }
+        },
+        {
+          "id": "cut-fuel-too-far",
+          "label": "Take very little fuel to maximize climb, even if reserve becomes thin.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. You solve one risk by creating another."
+          }
+        }
+      ]
+    },
+    {
+      "id": "takeoff-brief",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 2 },
+      "title": "Takeoff Briefing",
+      "prompt": "Which departure brief best fits this mission?",
+      "acsTag": "PA.VI.A.R1",
+      "options": [
+        {
+          "id": "full-runway-abort",
+          "label": "Use full runway, identify an abort point, and reject the takeoff if acceleration or engine indications are not right.",
+          "consequence": {
+            "points": 8,
+            "category": "adm",
+            "feedback": "Correct. Hot-day departures demand a disciplined abort mindset.",
+            "commMessage": "Takeoff brief complete: full runway, acceleration check, abort point identified."
+          }
+        },
+        {
+          "id": "intersection-ok",
+          "label": "Use an intersection to save taxi time because the airplane is powerful enough.",
+          "consequence": {
+            "points": 0,
+            "category": "preflight",
+            "feedback": "Incorrect. Giving away runway on a high-density-altitude departure is poor planning."
+          }
+        },
+        {
+          "id": "sort-it-out-later",
+          "label": "Skip the abort brief because if the engine is running, the takeoff will probably work out.",
+          "consequence": {
+            "points": 1,
+            "category": "adm",
+            "feedback": "Weak ADM. The whole point of the brief is to decide before the pressure spikes."
+          }
+        }
+      ]
+    },
+    {
+      "id": "sluggish-climb",
+      "phase": "flight",
+      "trigger": { "type": "elapsedMinutes", "value": 4 },
+      "title": "Poor Initial Climb",
+      "prompt": "After takeoff you are climbing, but much more slowly than expected in the heat. What is the best response?",
+      "acsTag": "PA.VI.A.R4",
+      "options": [
+        {
+          "id": "lower-nose-cool-think",
+          "label": "Pitch for the appropriate climb profile, reduce drag, and be ready to level off or return if performance remains inadequate.",
+          "consequence": {
+            "points": 9,
+            "category": "adm",
+            "feedback": "Correct. Protect airspeed first, then decide whether continuing is still justified.",
+            "aircraftChanges": { "speedKts": 102, "altitudeFt": 4300 },
+            "commMessage": "Climb is weaker than expected; prioritizing airspeed and reassessing the plan."
+          }
+        },
+        {
+          "id": "pull-harder",
+          "label": "Raise the nose further to force a stronger climb.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. Pulling harder in weak climb conditions risks getting slow and making things worse.",
+            "aircraftChanges": { "speedKts": 88, "altitudeFt": 3800 }
+          }
+        },
+        {
+          "id": "ignore-it",
+          "label": "Continue because the airplane is climbing, even if the margin is poor.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Weak. Marginal climb performance should trigger a real reassessment, not passive hope."
+          }
+        }
+      ]
+    },
+    {
+      "id": "hot-day-traffic-pattern",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 2 },
+      "title": "Go-Around Margin Discussion",
+      "prompt": "ATC mentions gusts near Louisville and asks if you can accept a short approach. What is the best answer?",
+      "acsTag": "PA.VIII.B.R5",
+      "options": [
+        {
+          "id": "decline-short",
+          "label": "Decline the short approach and request spacing so you keep a stable hot-day arrival and go-around margin.",
+          "consequence": {
+            "points": 8,
+            "category": "airspace",
+            "feedback": "Correct. Stable spacing matters more than convenience when performance margins are thinner.",
+            "commMessage": "Unable short approach due density-altitude performance concerns; request normal spacing.",
+            "commFrequency": "119.90"
+          }
+        },
+        {
+          "id": "accept-anything",
+          "label": "Accept the short approach to show confidence and keep traffic moving.",
+          "consequence": {
+            "points": 1,
+            "category": "adm",
+            "feedback": "Poor trade. Confidence is not the same thing as respecting reduced go-around margin."
+          }
+        },
+        {
+          "id": "stay-silent",
+          "label": "Say nothing and try to make it work.",
+          "consequence": {
+            "points": 0,
+            "category": "airspace",
+            "feedback": "Incorrect. If you need spacing, communicate it clearly."
+          }
+        }
+      ]
+    },
+    {
+      "id": "landing-or-divert",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 3 },
+      "title": "High-DA Arrival Discipline",
+      "prompt": "On final you are fast and slightly high. What is the best hot-day performance decision?",
+      "acsTag": "PA.IV.C.R5",
+      "options": [
+        {
+          "id": "go-around-early",
+          "label": "Go around early or divert if needed instead of trying to rescue a poor hot-day approach.",
+          "consequence": {
+            "points": 9,
+            "category": "emergencies",
+            "feedback": "Correct. High density altitude reduces your landing and go-around margin, so unstable means unstable.",
+            "commMessage": "Tower, Skylane 734JP going around due unstable approach."
+          }
+        },
+        {
+          "id": "force-touchdown",
+          "label": "Force the landing because the runway is long and you are already close.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. Long runway is not permission to force an unstable approach in degraded performance conditions."
+          }
+        },
+        {
+          "id": "big-slip-save",
+          "label": "Use aggressive late corrections and salvage it at the threshold.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Weak. The need for aggressive late corrections is the warning sign, not the plan."
+          }
+        }
+      ]
+    }
+  ]
+}

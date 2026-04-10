@@ -1,0 +1,277 @@
+{
+  "id": "mission-03-emergency",
+  "title": "Mission 03 — Electrical and Engine Trouble",
+  "summary": "A systems-management mission that starts routine and then adds an alternator problem followed by worsening engine indications. Prioritization matters more than perfect radio work.",
+  "route": {
+    "departure": "KLEX",
+    "destination": "KLOU",
+    "distanceNm": 62,
+    "recommendedAltitudeFt": 5500,
+    "waypoints": [
+      { "id": "lex", "name": "KLEX", "x": 120, "y": 310, "airport": true },
+      { "id": "georgetown", "name": "Georgetown", "x": 205, "y": 250 },
+      { "id": "frankfort", "name": "Frankfort", "x": 320, "y": 230, "airport": true },
+      { "id": "lou", "name": "KLOU", "x": 640, "y": 165, "airport": true }
+    ]
+  },
+  "weather": {
+    "departureMetar": "KLEX 142054Z 22009KT 10SM SCT050 25/14 A3003",
+    "destinationMetar": "KLOU 142056Z 21010KT 10SM SCT045 25/15 A3001",
+    "windsAloft": "3000: 230/14 | 6000: 240/20",
+    "visibilitySm": 10,
+    "ceilingFt": 5000,
+    "riskLevel": "moderate",
+    "summary": "Good VFR, but the mission is about system failures rather than weather."
+  },
+  "notams": [
+    "KFFT pilot-controlled lighting available after 2100Z.",
+    "KLOU runway 06/24 medium intensity approach lighting OTS."
+  ],
+  "preflight": {
+    "personalMinimums": [
+      "Any abnormal electrical indication requires a diversion plan",
+      "Engine indication changes trigger immediate troubleshooting",
+      "Preserve nearest suitable airport option when troubleshooting",
+      "Use checklist discipline before improvisation"
+    ],
+    "suggestedFuelGallons": 58,
+    "suggestedPassengers": 1,
+    "baggageLbs": 15
+  },
+  "events": [
+    {
+      "id": "system-brief",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 0 },
+      "title": "Systems Brief",
+      "prompt": "Before departure, what is the best way to prepare for a potential systems malfunction on this flight?",
+      "acsTag": "PA.VI.A.R1",
+      "options": [
+        {
+          "id": "review-checklists",
+          "label": "Review alternator, low-voltage, and engine failure memory items plus the nearest suitable airports en route.",
+          "consequence": {
+            "points": 9,
+            "category": "preflight",
+            "feedback": "Correct. Preparation lowers workload once a failure actually appears.",
+            "commMessage": "Emergency and abnormal checklists reviewed before departure."
+          }
+        },
+        {
+          "id": "wing-it",
+          "label": "Rely on instinct because real emergencies never match the checklist exactly.",
+          "consequence": {
+            "points": 1,
+            "category": "adm",
+            "feedback": "Poor preparation. Checklists exist to keep you from skipping essential actions under stress."
+          }
+        },
+        {
+          "id": "ask-passenger",
+          "label": "Tell the passenger to search the POH for you if something goes wrong.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Not ideal. Crew resource management is useful, but you must remain the primary systems manager."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fuel-for-outs",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 1 },
+      "title": "Fuel and Diversion Margin",
+      "prompt": "Which fuel plan best supports an abnormal procedure mission with multiple nearest-airport options?",
+      "acsTag": "PA.I.C.R4",
+      "options": [
+        {
+          "id": "healthy-buffer",
+          "label": "Carry 58 gallons so a diversion decision is never fuel-driven.",
+          "consequence": {
+            "points": 8,
+            "category": "preflight",
+            "feedback": "Correct. Good reserve gives you time to diagnose and divert without desperation."
+          }
+        },
+        {
+          "id": "min-fuel",
+          "label": "Launch with only minimum legal fuel because the route is short.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. Minimum legal fuel is not enough margin for abnormal troubleshooting and diversion."
+          }
+        },
+        {
+          "id": "top-off",
+          "label": "Top all the way off even though you do not need the extra weight for this mission.",
+          "consequence": {
+            "points": 5,
+            "category": "adm",
+            "feedback": "Acceptable, but not the best balance of margin and performance."
+          }
+        }
+      ]
+    },
+    {
+      "id": "systems-mentality",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 2 },
+      "title": "Abnormal Procedure Mindset",
+      "prompt": "If an electrical issue begins in flight, what is the best immediate mindset?",
+      "acsTag": "PA.VII.B.R2",
+      "options": [
+        {
+          "id": "aviate-navigate-communicate",
+          "label": "Aviate first, identify the nearest suitable airport, then communicate while working the checklist.",
+          "consequence": {
+            "points": 8,
+            "category": "adm",
+            "feedback": "Correct. Maintain aircraft control, preserve the nearest airport option, and then troubleshoot methodically."
+          }
+        },
+        {
+          "id": "radio-first",
+          "label": "Talk immediately before stabilizing the airplane because ATC needs to know first.",
+          "consequence": {
+            "points": 2,
+            "category": "airspace",
+            "feedback": "Communication matters, but not before aircraft control and situational stabilization."
+          }
+        },
+        {
+          "id": "ignore-until-confirmed",
+          "label": "Wait until multiple instruments fail before changing the plan.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. Early action is better than letting a manageable abnormal condition become an emergency."
+          }
+        }
+      ]
+    },
+    {
+      "id": "alternator-failure",
+      "phase": "flight",
+      "trigger": { "type": "elapsedMinutes", "value": 5 },
+      "title": "Low Voltage / Alternator Issue",
+      "prompt": "The ammeter drops and the low-voltage light appears. What is the best response?",
+      "acsTag": "PA.VII.B.R4",
+      "options": [
+        {
+          "id": "shed-load-divert",
+          "label": "Reduce electrical load, confirm the alternator issue, and divert to Frankfort while power remains available.",
+          "consequence": {
+            "points": 9,
+            "category": "emergencies",
+            "feedback": "Correct. Preserve the battery, shorten the problem, and get on the ground before the situation compounds.",
+            "aircraftChanges": { "alternatorOnline": false, "ammeterPct": 38 },
+            "commMessage": "Approach, Skylane 734JP has a low-voltage indication and is diverting to Frankfort.",
+            "commFrequency": "120.15"
+          }
+        },
+        {
+          "id": "continue-monitor",
+          "label": "Continue toward Louisville because the engine is still running fine.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Poor ADM. A systems issue is easiest to solve while you still have time, radios, and nearby airports.",
+            "aircraftChanges": { "alternatorOnline": false, "ammeterPct": 22 },
+            "weatherSummary": "Workload increases as you remain airborne with a draining electrical system."
+          }
+        },
+        {
+          "id": "cycle-master",
+          "label": "Keep recycling switches repeatedly without changing the bigger plan.",
+          "consequence": {
+            "points": 1,
+            "category": "emergencies",
+            "feedback": "Weak response. Troubleshooting without a diversion mindset can waste precious electrical margin."
+          }
+        }
+      ]
+    },
+    {
+      "id": "oil-pressure-drop",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 2 },
+      "title": "Oil Pressure Drops",
+      "prompt": "A few minutes later, oil pressure trends sharply downward and engine roughness starts increasing. What is the best action?",
+      "acsTag": "PA.VII.B.R6",
+      "options": [
+        {
+          "id": "nearest-landing",
+          "label": "Commit to the nearest suitable landing area or airport immediately and prepare for a power loss.",
+          "consequence": {
+            "points": 9,
+            "category": "emergencies",
+            "feedback": "Correct. Falling oil pressure plus roughness means you should expect total engine failure soon.",
+            "aircraftChanges": { "oilPressurePct": 28, "speedKts": 95 },
+            "commMessage": "Mayday, Skylane 734JP, engine indications deteriorating, landing at nearest field.",
+            "commFrequency": "121.50"
+          }
+        },
+        {
+          "id": "push-destination",
+          "label": "Increase power slightly and try to make Louisville while you still have partial power.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. Pressing toward the destination increases the chance of a total failure far from the best landing option.",
+            "aircraftChanges": { "oilPressurePct": 12, "speedKts": 85 }
+          }
+        },
+        {
+          "id": "diagnose-longer",
+          "label": "Spend more time diagnosing before deciding where to land.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Weak. Once the indications suggest imminent failure, action matters more than perfect diagnosis."
+          }
+        }
+      ]
+    },
+    {
+      "id": "emergency-comms",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 3 },
+      "title": "Emergency Radio Priorities",
+      "prompt": "If the radios are still working as you commit to the nearest landing, what is the best concise call?",
+      "acsTag": "PA.VIII.B.R5",
+      "options": [
+        {
+          "id": "position-problem-plan",
+          "label": "State who you are, where you are, the problem, and your intended landing point in one concise call.",
+          "consequence": {
+            "points": 8,
+            "category": "airspace",
+            "feedback": "Correct. Concise emergency calls improve your odds of rapid support.",
+            "commMessage": "Mayday, Skylane 734JP two miles east of Frankfort, engine problem, landing Frankfort airport.",
+            "commFrequency": "121.50"
+          }
+        },
+        {
+          "id": "long-story",
+          "label": "Tell the entire troubleshooting sequence before giving your position or intentions.",
+          "consequence": {
+            "points": 1,
+            "category": "airspace",
+            "feedback": "Inefficient. Emergency communication should be brief and actionable."
+          }
+        },
+        {
+          "id": "no-call",
+          "label": "Don’t say anything because talking is always a distraction during emergencies.",
+          "consequence": {
+            "points": 3,
+            "category": "adm",
+            "feedback": "Sometimes silence is necessary, but if you have time and capacity, a short emergency call is valuable."
+          }
+        }
+      ]
+    }
+  ]
+}

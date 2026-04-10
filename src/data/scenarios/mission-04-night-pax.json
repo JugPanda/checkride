@@ -1,0 +1,270 @@
+{
+  "id": "mission-04-night-pax",
+  "title": "Mission 04 — Night Passenger Pressure",
+  "summary": "A night cross-country with passenger expectations, black-hole visual risk, and increasing pressure to keep the schedule. This mission is about saying no before the situation owns you.",
+  "route": {
+    "departure": "KLEX",
+    "destination": "KLOU",
+    "distanceNm": 58,
+    "recommendedAltitudeFt": 4500,
+    "waypoints": [
+      { "id": "lex", "name": "KLEX", "x": 120, "y": 310, "airport": true },
+      { "id": "versailles", "name": "Versailles", "x": 230, "y": 285 },
+      { "id": "shelbyville", "name": "Shelbyville", "x": 420, "y": 245 },
+      { "id": "lou", "name": "KLOU", "x": 640, "y": 165, "airport": true }
+    ]
+  },
+  "weather": {
+    "departureMetar": "KLEX 150054Z 21007KT 10SM FEW060 19/13 A3009",
+    "destinationMetar": "KLOU 150056Z 22008KT 9SM SCT045 18/14 A3008",
+    "windsAloft": "3000: 220/12 | 6000: 230/16",
+    "visibilitySm": 9,
+    "ceilingFt": 4500,
+    "riskLevel": "moderate",
+    "summary": "Night VFR with adequate weather, but reduced visual cues, passenger pressure, and a long dark stretch westbound increase the risk picture."
+  },
+  "notams": [
+    "KLOU PAPI runway 24 unavailable.",
+    "Several towers west of Shelbyville are unlit above surrounding terrain."
+  ],
+  "preflight": {
+    "personalMinimums": [
+      "Night passenger carrying only if current and well-rested",
+      "Minimum 8 SM visibility at night",
+      "Avoid black-hole approaches if unfamiliar",
+      "Passenger schedule is never the deciding factor"
+    ],
+    "suggestedFuelGallons": 62,
+    "suggestedPassengers": 1,
+    "baggageLbs": 15
+  },
+  "events": [
+    {
+      "id": "night-currency",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 0 },
+      "title": "Night Passenger Currency",
+      "prompt": "You are legal and current, but slightly tired after a long day. What is the best self-assessment?",
+      "acsTag": "PA.I.B.R1",
+      "options": [
+        {
+          "id": "honest-imsafe",
+          "label": "Use IMSAFE honestly and be willing to delay if fatigue is affecting judgment or performance.",
+          "consequence": {
+            "points": 9,
+            "category": "adm",
+            "feedback": "Correct. Night flights increase workload, so fatigue deserves extra respect.",
+            "commMessage": "Night flight only if IMSAFE is honestly green."
+          }
+        },
+        {
+          "id": "legal-is-enough",
+          "label": "Go because legal currency automatically means you are fit to go.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Incorrect mindset. Currency is a legal standard, not proof of readiness."
+          }
+        },
+        {
+          "id": "hide-fatigue",
+          "label": "Launch anyway and just avoid mentioning the fatigue concern.",
+          "consequence": {
+            "points": 0,
+            "category": "adm",
+            "feedback": "Poor ADM. Unacknowledged fatigue tends to appear when the workload spikes."
+          }
+        }
+      ]
+    },
+    {
+      "id": "passenger-brief",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 1 },
+      "title": "Passenger Expectations",
+      "prompt": "Your passenger says they absolutely must arrive tonight. What is the best response?",
+      "acsTag": "PA.I.A.R3",
+      "options": [
+        {
+          "id": "set-boundary",
+          "label": "Set the expectation now that the flight only happens if risk remains acceptable all the way through landing.",
+          "consequence": {
+            "points": 8,
+            "category": "adm",
+            "feedback": "Correct. Boundaries set early reduce pressure later in the flight.",
+            "commMessage": "Passenger brief complete: schedule does not override safety."
+          }
+        },
+        {
+          "id": "promise-arrival",
+          "label": "Promise that you’ll get them there unless something really extreme happens.",
+          "consequence": {
+            "points": 0,
+            "category": "adm",
+            "feedback": "Incorrect. Promising completion creates exactly the external pressure ADM is meant to prevent."
+          }
+        },
+        {
+          "id": "joke-it-off",
+          "label": "Laugh it off and avoid discussing the possibility of a delay or diversion.",
+          "consequence": {
+            "points": 3,
+            "category": "adm",
+            "feedback": "Weak CRM. The passenger should understand that diversion or cancellation is always on the table."
+          }
+        }
+      ]
+    },
+    {
+      "id": "night-fuel",
+      "phase": "preflight",
+      "trigger": { "type": "preflight", "value": 2 },
+      "title": "Night Reserve Margin",
+      "prompt": "What fuel strategy is best for a night mission with possible delay vectors or a precautionary return?",
+      "acsTag": "PA.I.C.R4",
+      "options": [
+        {
+          "id": "extra-night-buffer",
+          "label": "Carry 62 gallons to maintain a generous reserve beyond the legal night minimum.",
+          "consequence": {
+            "points": 8,
+            "category": "preflight",
+            "feedback": "Correct. Night and passenger pressure justify extra practical reserve."
+          }
+        },
+        {
+          "id": "exact-minimum",
+          "label": "Take only what you need plus 45 minutes because the regs say that is enough.",
+          "consequence": {
+            "points": 1,
+            "category": "emergencies",
+            "feedback": "Poor planning. Legal minimums are not an ideal target for a night passenger mission."
+          }
+        },
+        {
+          "id": "max-fuel-weight",
+          "label": "Top off regardless of passenger comfort, runway length, or performance impact.",
+          "consequence": {
+            "points": 5,
+            "category": "adm",
+            "feedback": "Not terrible, but the best answer balances reserve with the rest of the mission profile."
+          }
+        }
+      ]
+    },
+    {
+      "id": "black-hole-arrival",
+      "phase": "flight",
+      "trigger": { "type": "elapsedMinutes", "value": 6 },
+      "title": "Sparse Lights Ahead",
+      "prompt": "Approach to Louisville places you over a dark area with minimal visual references. What is the best technique adjustment?",
+      "acsTag": "PA.IX.A.R5",
+      "options": [
+        {
+          "id": "trust-instruments",
+          "label": "Cross-check instruments and maintain a stabilized profile instead of trusting visual illusions alone.",
+          "consequence": {
+            "points": 9,
+            "category": "adm",
+            "feedback": "Correct. Black-hole conditions demand disciplined instrument cross-checking even in VFR."
+          }
+        },
+        {
+          "id": "descend-visually",
+          "label": "Descend based on how low the runway lights look from the windshield.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. Visual illusion risk is exactly why you do not trust outside cues alone here.",
+            "aircraftChanges": { "altitudeFt": 2800 }
+          }
+        },
+        {
+          "id": "speed-up",
+          "label": "Increase speed a little so you spend less time over the dark area.",
+          "consequence": {
+            "points": 1,
+            "category": "adm",
+            "feedback": "Poor technique. Rushing a dark approach reduces your margin further."
+          }
+        }
+      ]
+    },
+    {
+      "id": "passenger-anxiety",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 2 },
+      "title": "Passenger Anxiety in Cruise",
+      "prompt": "Your passenger becomes anxious and asks you to descend lower because they can’t see much outside. What is the best response?",
+      "acsTag": "PA.I.A.R3",
+      "options": [
+        {
+          "id": "reassure-hold-profile",
+          "label": "Reassure them, explain the plan, and maintain the safer cruise profile rather than descending for comfort.",
+          "consequence": {
+            "points": 8,
+            "category": "adm",
+            "feedback": "Correct. Manage the passenger, but do not let their anxiety create a poorer altitude choice.",
+            "commMessage": "Maintaining safer altitude despite passenger request to descend."
+          }
+        },
+        {
+          "id": "descend-for-comfort",
+          "label": "Descend below your planned altitude so the passenger feels better.",
+          "consequence": {
+            "points": 1,
+            "category": "adm",
+            "feedback": "Weak ADM. Descending at night for comfort is a poor trade unless it clearly improves safety."
+          }
+        },
+        {
+          "id": "snap-back",
+          "label": "Tell them to be quiet and stop talking during the flight.",
+          "consequence": {
+            "points": 3,
+            "category": "adm",
+            "feedback": "Not ideal CRM. You should keep command authority without creating unnecessary tension."
+          }
+        }
+      ]
+    },
+    {
+      "id": "night-diversion-choice",
+      "phase": "flight",
+      "trigger": { "type": "waypointIndex", "value": 3 },
+      "title": "Stabilized or Divert",
+      "prompt": "You realize you are not stable by your desired gate on final. What is the best action?",
+      "acsTag": "PA.IV.C.R5",
+      "options": [
+        {
+          "id": "go-around",
+          "label": "Go around early, reset, and if needed divert rather than force the night landing.",
+          "consequence": {
+            "points": 9,
+            "category": "emergencies",
+            "feedback": "Correct. A go-around or diversion is always better than salvaging an unstable night approach.",
+            "commMessage": "Tower, Skylane 734JP going around to re-stabilize."
+          }
+        },
+        {
+          "id": "salvage-it",
+          "label": "Force the landing because you are close and the passenger wants to be done.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Incorrect. Pressing an unstable night landing is a classic bad-outcome setup."
+          }
+        },
+        {
+          "id": "one-more-correction",
+          "label": "Keep making large corrections and hope it comes together by the threshold.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Weak. Large late corrections are the signal to abandon the approach, not continue."
+          }
+        }
+      ]
+    }
+  ]
+}

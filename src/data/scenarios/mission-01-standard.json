@@ -1,0 +1,308 @@
+{
+  "id": "mission-01-standard",
+  "title": "Mission 01 \u2014 Lexington to Louisville",
+  "summary": "A daytime VFR cross-country from KLEX to KLOU. Benign weather, light winds, and a low-pressure radio workload make this the tutorial mission.",
+  "route": {
+    "departure": "KLEX",
+    "destination": "KLOU",
+    "distanceNm": 58,
+    "recommendedAltitudeFt": 5500,
+    "waypoints": [
+      {
+        "id": "lex",
+        "name": "KLEX",
+        "x": 120,
+        "y": 310,
+        "airport": true
+      },
+      {
+        "id": "versailles",
+        "name": "Versailles",
+        "x": 240,
+        "y": 280
+      },
+      {
+        "id": "shelbyville",
+        "name": "Shelbyville",
+        "x": 410,
+        "y": 235
+      },
+      {
+        "id": "lou",
+        "name": "KLOU",
+        "x": 640,
+        "y": 165,
+        "airport": true
+      }
+    ]
+  },
+  "weather": {
+    "departureMetar": "KLEX 141854Z 23008KT 10SM FEW050 26/16 A3005",
+    "destinationMetar": "KLOU 141856Z 22010KT 10SM SCT055 27/17 A3004",
+    "windsAloft": "3000: 240/12 | 6000: 250/18",
+    "visibilitySm": 10,
+    "ceilingFt": 5500,
+    "riskLevel": "low",
+    "summary": "Excellent VFR with scattered clouds and manageable southwest winds."
+  },
+  "notams": [
+    "KLOU taxiway Alpha closed between A3 and A5.",
+    "KLEX Runway 04/22 lighting maintenance after 2200Z."
+  ],
+  "preflight": {
+    "personalMinimums": [
+      "Day VFR only",
+      "Crosswind component below 15 kt",
+      "Minimum fuel reserve 45 minutes",
+      "No ceilings below 3000 ft for solo XC"
+    ],
+    "suggestedFuelGallons": 56,
+    "suggestedPassengers": 1,
+    "baggageLbs": 20
+  },
+  "events": [
+    {
+      "id": "go-no-go",
+      "phase": "preflight",
+      "trigger": {
+        "type": "preflight",
+        "value": 0
+      },
+      "title": "Go / No-Go",
+      "prompt": "Weather is solid VFR and the aircraft is within limits. What is the best ADM decision?",
+      "acsTag": "PA.I.A.R1",
+      "options": [
+        {
+          "id": "go",
+          "label": "Launch as planned with a standard VFR briefing.",
+          "consequence": {
+            "points": 9,
+            "category": "preflight",
+            "feedback": "Correct. Conditions are well within personal minimums and aircraft capability."
+          }
+        },
+        {
+          "id": "delay",
+          "label": "Delay for several hours even though no risk factor requires it.",
+          "consequence": {
+            "points": 5,
+            "category": "adm",
+            "feedback": "Conservative, but not supported by the current risk picture."
+          }
+        },
+        {
+          "id": "cancel",
+          "label": "Cancel because any cross-country introduces risk.",
+          "consequence": {
+            "points": 3,
+            "category": "adm",
+            "feedback": "Risk exists, but ADM weighs actual hazards rather than avoiding all exposure."
+          }
+        }
+      ]
+    },
+    {
+      "id": "weight-balance",
+      "phase": "preflight",
+      "trigger": {
+        "type": "preflight",
+        "value": 1
+      },
+      "title": "Weight & Balance",
+      "prompt": "With one passenger, 56 gallons, and 20 lb of baggage, what should you conclude?",
+      "acsTag": "PA.I.C.R3",
+      "options": [
+        {
+          "id": "within",
+          "label": "The airplane is under max gross and acceptable for departure.",
+          "consequence": {
+            "points": 8,
+            "category": "preflight",
+            "feedback": "Correct. The loading is within the aircraft's 3,100 lb max gross for this mission."
+          }
+        },
+        {
+          "id": "drop-fuel",
+          "label": "Dump fuel to 35 gallons because the airplane is overweight.",
+          "consequence": {
+            "points": 2,
+            "category": "preflight",
+            "feedback": "Incorrect. The current loading is already within limits."
+          }
+        },
+        {
+          "id": "ignore",
+          "label": "Skip the calculation because the airplane feels light enough.",
+          "consequence": {
+            "points": 0,
+            "category": "preflight",
+            "feedback": "Poor ADM. Weight and balance must be computed, not guessed."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fuel-plan",
+      "phase": "preflight",
+      "trigger": {
+        "type": "preflight",
+        "value": 2
+      },
+      "title": "Fuel Planning",
+      "prompt": "The trip is about 58 NM. What fuel plan best matches good preflight planning?",
+      "acsTag": "PA.I.C.R4",
+      "options": [
+        {
+          "id": "planned",
+          "label": "Carry 56 gallons, giving ample endurance and reserve.",
+          "consequence": {
+            "points": 8,
+            "category": "preflight",
+            "feedback": "Correct. This provides more than enough fuel while staying efficient."
+          }
+        },
+        {
+          "id": "minimum",
+          "label": "Launch with 12 gallons because the flight is short.",
+          "consequence": {
+            "points": 0,
+            "category": "emergencies",
+            "feedback": "Unsafe. A short flight still requires legal reserve and contingency planning.",
+            "aircraftChanges": {
+              "fuelGallons": 12
+            }
+          }
+        },
+        {
+          "id": "top-off",
+          "label": "Top off to 87 gallons even if it reduces performance margin without need.",
+          "consequence": {
+            "points": 5,
+            "category": "adm",
+            "feedback": "Legal, but not ideal. More fuel is not automatically better if it adds unnecessary weight."
+          }
+        }
+      ]
+    },
+    {
+      "id": "departure-frequency",
+      "phase": "flight",
+      "trigger": {
+        "type": "elapsedMinutes",
+        "value": 3
+      },
+      "title": "Departure Frequency",
+      "prompt": "You're handed off after departure. Which response is best?",
+      "acsTag": "PA.VIII.B.R5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Louisville Approach, Skylane 734JP, level 4,500 climbing 5,500.",
+          "consequence": {
+            "points": 8,
+            "category": "airspace",
+            "feedback": "Correct concise radio format."
+          }
+        },
+        {
+          "id": "missing-alt",
+          "label": "Louisville Approach, 4JP with you.",
+          "consequence": {
+            "points": 4,
+            "category": "airspace",
+            "feedback": "Acceptable but incomplete. Altitude helps ATC confirm your status."
+          }
+        },
+        {
+          "id": "chatty",
+          "label": "Hey approach, this is the Skylane from Lexington heading over your way.",
+          "consequence": {
+            "points": 0,
+            "category": "airspace",
+            "feedback": "Nonstandard phraseology increases workload and confusion."
+          }
+        }
+      ]
+    },
+    {
+      "id": "class-c-transition",
+      "phase": "flight",
+      "trigger": {
+        "type": "waypointIndex",
+        "value": 2
+      },
+      "title": "Class C Transition",
+      "prompt": "Approach offers a transition near the Louisville Class C shelf. What's the best action?",
+      "acsTag": "PA.VII.A.R2",
+      "options": [
+        {
+          "id": "comply",
+          "label": "Read back the clearance and continue while monitoring the assigned frequency.",
+          "consequence": {
+            "points": 9,
+            "category": "airspace",
+            "feedback": "Correct. You accepted the service and remain compliant inside controlled airspace."
+          }
+        },
+        {
+          "id": "self-announce",
+          "label": "Continue through the shelf and self-announce if needed.",
+          "consequence": {
+            "points": 0,
+            "category": "airspace",
+            "feedback": "Incorrect. You need two-way communication and any required clearance for the offered transition."
+          }
+        },
+        {
+          "id": "avoid",
+          "label": "Decline and divert south to stay entirely clear of the shelf.",
+          "consequence": {
+            "points": 6,
+            "category": "adm",
+            "feedback": "Conservative and safe, but less efficient than accepting the valid ATC clearance."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fuel-check",
+      "phase": "flight",
+      "trigger": {
+        "type": "waypointIndex",
+        "value": 3
+      },
+      "title": "Fuel Cross-Check",
+      "prompt": "You're established on course with plenty of fuel. What in-flight habit best supports ADM?",
+      "acsTag": "PA.I.C.R5",
+      "options": [
+        {
+          "id": "check",
+          "label": "Cross-check fuel burn against time and verify reserves remain healthy.",
+          "consequence": {
+            "points": 8,
+            "category": "adm",
+            "feedback": "Correct. Good pilots continuously verify assumptions during flight."
+          }
+        },
+        {
+          "id": "trust",
+          "label": "Ignore the gauges because the preflight plan already covered fuel.",
+          "consequence": {
+            "points": 2,
+            "category": "adm",
+            "feedback": "Weak ADM. Fuel status must be monitored in flight, not assumed."
+          }
+        },
+        {
+          "id": "lean-hard",
+          "label": "Aggressively lean for max economy without checking engine indications.",
+          "consequence": {
+            "points": 1,
+            "category": "emergencies",
+            "feedback": "Poor systems management. Leaning decisions should be tied to engine indications and POH guidance."
+          }
+        }
+      ]
+    }
+  ]
+}
