@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from '../lib/phaser'
 import { getCampaignSummary, resetProgressState } from '../state/progress'
 import { getMissionCatalog, getMissionOrder, restoreMissionFromStorage, startMission } from '../state/session'
 import { createButton } from '../ui/uiHelpers'
@@ -49,17 +49,28 @@ export class MainMenuScene extends Phaser.Scene {
     const missions = getMissionCatalog()
     missions.forEach((mission, index) => {
       const progress = campaign.state.missions[mission.id]
-      const y = 260 + index * 96
+      const y = 260 + index * 106
       const unlocked = progress?.unlocked ?? index === 0
-      const title = unlocked ? mission.title : `${mission.title} (Locked)`
+      const cardHeight = 90
 
-      this.add.rectangle(width / 2, y + 12, width - 120, 82, unlocked ? 0x07111f : 0x0b1220, 0.98)
+      this.add.rectangle(width / 2, y + 12, width - 120, cardHeight, unlocked ? 0x07111f : 0x0b1220, 0.98)
         .setStrokeStyle(1, unlocked ? 0x475569 : 0x1e293b, 0.7)
 
-      createButton(this, 220, y, title, () => {
-        startMission(mission.id)
-        this.scene.start('MissionBriefingScene')
-      }, !unlocked)
+      if (unlocked) {
+        createButton(this, 220, y, mission.title, () => {
+          startMission(mission.id)
+          this.scene.start('MissionBriefingScene')
+        })
+      } else {
+        this.add.rectangle(220, y, 220, 40, 0x1e293b, 0.95).setStrokeStyle(1, 0x475569, 0.45)
+        this.add.text(220, y, `${mission.title} • Locked`, {
+          fontFamily: 'Arial',
+          fontSize: '18px',
+          color: '#94a3b8',
+          wordWrap: { width: 198 },
+          align: 'center',
+        }).setOrigin(0.5)
+      }
 
       this.add.text(390, y - 16, mission.summary, {
         fontFamily: 'Arial',

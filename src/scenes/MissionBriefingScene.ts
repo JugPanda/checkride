@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from '../lib/phaser'
 import { getActiveSession } from '../state/session'
 import { createButton } from '../ui/uiHelpers'
 

@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import type Phaser from 'phaser'
 
 type ToneKind = 'click' | 'success' | 'warning' | 'failure' | 'mission'
 

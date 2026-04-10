@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from './lib/phaser'
 import './style.css'
 import { DebriefScene } from './scenes/DebriefScene'
 import { FlightScene } from './scenes/FlightScene'

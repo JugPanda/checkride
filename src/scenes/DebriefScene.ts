@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from '../lib/phaser'
 import { getCampaignSummary, recordMissionResult } from '../state/progress'
 import { clearActiveSession, getActiveSession, getMissionOrder } from '../state/session'
 import { createButton } from '../ui/uiHelpers'

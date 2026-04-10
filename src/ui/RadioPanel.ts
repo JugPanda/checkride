@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import type Phaser from 'phaser'
 import type { RunSession } from '../state/session'
 
 export class RadioPanel {

@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from '../lib/phaser'
 import { getActiveSession } from '../state/session'
 import type { LoadingInput, ScenarioEvent } from '../types'
 import { playUiTone } from '../ui/audio'

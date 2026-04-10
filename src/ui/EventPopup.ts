@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import type Phaser from 'phaser'
 import type { ScenarioEvent, ScenarioOption } from '../types'
 import { createButton } from './uiHelpers'
 
