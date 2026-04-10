@@ -9,9 +9,9 @@ export class PreflightScene extends Phaser.Scene {
   private promptText?: Phaser.GameObjects.Text
   private feedbackText?: Phaser.GameObjects.Text
   private summaryText?: Phaser.GameObjects.Text
-  private missionInfoText?: Phaser.GameObjects.Text
   private verdictText?: Phaser.GameObjects.Text
   private optionObjects: Phaser.GameObjects.GameObject[] = []
+  private controlObjects: Phaser.GameObjects.GameObject[] = []
   private loading: LoadingInput = {
     pilotWeight: 170,
     passengerWeight: 150,
@@ -41,8 +41,8 @@ export class PreflightScene extends Phaser.Scene {
       color: '#93c5fd',
     })
 
-    this.add.rectangle(235, 190, 410, 180, 0x0f172a, 0.96).setStrokeStyle(1, 0x475569, 0.8)
-    this.add.rectangle(990, 190, 470, 180, 0x0f172a, 0.96).setStrokeStyle(1, 0x475569, 0.8)
+    this.add.rectangle(235, 198, 410, 210, 0x0f172a, 0.96).setStrokeStyle(1, 0x475569, 0.8)
+    this.add.rectangle(990, 214, 470, 242, 0x0f172a, 0.96).setStrokeStyle(1, 0x475569, 0.8)
     this.add.rectangle(this.scale.width / 2, 495, this.scale.width - 80, 260, 0x07111f, 0.98).setStrokeStyle(2, 0x334155, 0.75)
     this.add.rectangle(this.scale.width / 2, 700, this.scale.width - 80, 140, 0x07111f, 0.98).setStrokeStyle(2, 0x334155, 0.75)
 
@@ -84,16 +84,16 @@ export class PreflightScene extends Phaser.Scene {
     ]
 
     labels.forEach(([key, label], index) => {
-      const y = 130 + index * 34
+      const y = 126 + index * 38
       this.add.text(60, y, label, { fontFamily: 'Arial', fontSize: '18px', color: '#dbeafe' })
-      const valueText = this.add.text(240, y, String(this.loading[key]), { fontFamily: 'Courier New', fontSize: '18px', color: '#f8fafc' })
-      createButton(this, 360, y + 12, '-', () => {
+      const valueText = this.add.text(250, y, String(this.loading[key]), { fontFamily: 'Courier New', fontSize: '20px', color: '#f8fafc' })
+      this.createAdjustButton(342, y + 12, '-', () => {
         this.loading[key] = Math.max(0, this.loading[key] - (key === 'fuelGallons' ? 5 : 10))
         session.aircraft.setLoading(this.loading)
         valueText.setText(String(this.loading[key]))
         this.refreshSummary()
       })
-      createButton(this, 520, y + 12, '+', () => {
+      this.createAdjustButton(396, y + 12, '+', () => {
         this.loading[key] += key === 'fuelGallons' ? 5 : 10
         session.aircraft.setLoading(this.loading)
         valueText.setText(String(this.loading[key]))
@@ -105,36 +105,25 @@ export class PreflightScene extends Phaser.Scene {
   }
 
   private renderMissionInfo(): void {
-    const session = getActiveSession()
-    if (!this.missionInfoText) {
-      this.missionInfoText = this.add.text(770, 120, '', {
-        fontFamily: 'Arial',
-        fontSize: '18px',
-        color: '#dbeafe',
-        lineSpacing: 8,
-        wordWrap: { width: 410 },
-      })
-    }
-
-    this.missionInfoText.setText([
-      `Departure: ${session.scenario.route.departure}`,
-      `Destination: ${session.scenario.route.destination}`,
-      `Weather risk: ${session.weather.getWeather().riskLevel.toUpperCase()}`,
-      `Departure METAR: ${session.scenario.weather.departureMetar}`,
-      `Destination METAR: ${session.scenario.weather.destinationMetar}`,
-      `Winds aloft: ${session.scenario.weather.windsAloft}`,
-    ].join('\n'))
+    this.refreshSummary()
   }
 
   private refreshSummary(): void {
     const session = getActiveSession()
     const snapshot = session.aircraft.getSnapshot()
     if (!this.summaryText) {
-      this.summaryText = this.add.text(770, 138, '', {
+      this.add.text(760, 108, 'Aircraft / Mission Snapshot', {
         fontFamily: 'Arial',
-        fontSize: '20px',
+        fontSize: '18px',
+        color: '#93c5fd',
+        fontStyle: 'bold',
+      })
+      this.summaryText = this.add.text(760, 138, '', {
+        fontFamily: 'Arial',
+        fontSize: '18px',
         color: '#f8fafc',
-        lineSpacing: 10,
+        lineSpacing: 8,
+        wordWrap: { width: 410 },
       })
     }
 
@@ -145,7 +134,33 @@ export class PreflightScene extends Phaser.Scene {
       `Fuel endurance: ${snapshot.enduranceHours.toFixed(1)} hr`,
       `Reserve after planned leg: ${reserveStatus ? 'HEALTHY' : 'MARGINAL'}`,
       `Cruise setup: ${snapshot.altitudeFt.toFixed(0)} ft / ${snapshot.speedKts.toFixed(0)} KTAS`,
+      '',
+      `Departure: ${session.scenario.route.departure}`,
+      `Destination: ${session.scenario.route.destination}`,
+      `Route distance: ${session.scenario.route.distanceNm} NM`,
+      `Weather risk: ${session.weather.getWeather().riskLevel.toUpperCase()}`,
+      `Winds aloft: ${session.scenario.weather.windsAloft}`,
     ].join('\n'))
+  }
+
+  private createAdjustButton(x: number, y: number, label: string, onClick: () => void): void {
+    const bg = this.add.rectangle(x, y, 38, 30, 0x1c7ed6, 0.95).setStrokeStyle(1, 0xffffff, 0.16)
+    const text = this.add.text(x, y, label, {
+      fontFamily: 'Arial',
+      fontSize: '22px',
+      color: '#f8fbff',
+      fontStyle: 'bold',
+    }).setOrigin(0.5)
+
+    bg.setInteractive({ useHandCursor: true })
+      .on('pointerover', () => bg.setFillStyle(0x1971c2, 1))
+      .on('pointerout', () => bg.setFillStyle(0x1c7ed6, 0.95))
+      .on('pointerdown', () => {
+        playUiTone(this, 'click')
+        onClick()
+      })
+
+    this.controlObjects.push(bg, text)
   }
 
   private renderPrompt(): void {

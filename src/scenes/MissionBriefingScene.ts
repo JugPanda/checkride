@@ -20,8 +20,8 @@ export class MissionBriefingScene extends Phaser.Scene {
       fontStyle: 'bold',
     })
 
-    this.add.rectangle(width / 2, 238, width - 88, 320, 0x0b1626, 0.98).setStrokeStyle(2, 0x334155, 0.72)
-    this.add.rectangle(width / 2, 238, 2, 304, 0x334155, 0.65)
+    this.add.rectangle(width / 2, 246, width - 88, 356, 0x0b1626, 0.98).setStrokeStyle(2, 0x334155, 0.72)
+    this.add.rectangle(width / 2, 246, 2, 336, 0x334155, 0.65)
 
     this.add.text(58, 92, [
       'Mission Overview',
@@ -61,15 +61,15 @@ export class MissionBriefingScene extends Phaser.Scene {
       wordWrap: { width: width / 2 - 110 },
     })
 
-    this.add.rectangle(width / 2, 534, width - 88, 188, 0x08121f, 0.98).setStrokeStyle(2, 0x334155, 0.72)
-    this.add.text(58, 448, 'Mission Focus', {
+    this.add.rectangle(width / 2, 562, width - 88, 208, 0x08121f, 0.98).setStrokeStyle(2, 0x334155, 0.72)
+    this.add.text(58, 468, 'Mission Focus', {
       fontFamily: 'Arial',
       fontSize: '20px',
       color: '#93c5fd',
       fontStyle: 'bold',
     })
 
-    this.add.text(58, 486, mission.preflight.personalMinimums.map((minimum) => `• ${minimum}`).join('\n'), {
+    this.add.text(58, 506, mission.preflight.personalMinimums.map((minimum) => `• ${minimum}`).join('\n'), {
       fontFamily: 'Arial',
       fontSize: '18px',
       color: '#dbeafe',
@@ -77,14 +77,14 @@ export class MissionBriefingScene extends Phaser.Scene {
       wordWrap: { width: width / 2 - 110 },
     })
 
-    this.add.text(width / 2 + 42, 448, 'Instructor Cue', {
+    this.add.text(width / 2 + 42, 468, 'Instructor Cue', {
       fontFamily: 'Arial',
       fontSize: '20px',
       color: '#93c5fd',
       fontStyle: 'bold',
     })
 
-    this.add.text(width / 2 + 42, 486, 'Treat each mission like a DPE scenario. The goal is not perfection — it is to show that you recognize risk early, communicate clearly, and adapt before a small problem becomes a checkride bust.', {
+    this.add.text(width / 2 + 42, 506, 'Treat each mission like a DPE scenario. The goal is not perfection — it is to show that you recognize risk early, communicate clearly, and adapt before a small problem becomes a checkride bust.', {
       fontFamily: 'Arial',
       fontSize: '18px',
       color: '#cbd5e1',
