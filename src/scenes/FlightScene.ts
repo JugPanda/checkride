@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import { getActiveSession } from '../state/session'
 import type { ScenarioOption } from '../types'
-import { playUiTone } from '../ui/audio'
+import { playUiTone, startMissionHum } from '../ui/audio'
 import { EventPopup } from '../ui/EventPopup'
 import { InstrumentPanel } from '../ui/InstrumentPanel'
 import { RadioPanel } from '../ui/RadioPanel'
@@ -24,6 +24,7 @@ export class FlightScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#0b1220')
     const session = getActiveSession()
     const mission = session.scenario
+    startMissionHum(this)
 
     this.add.text(24, 18, `${mission.route.departure} → ${mission.route.destination}`, {
       fontFamily: 'Arial',
